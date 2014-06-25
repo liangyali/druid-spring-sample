@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yintai.repository.ProductRepository">
+
+    <resultMap id="ProductResultMap" type="com.yintai.domain.Product">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <collection property="skus" ofType="com.yintai.domain.Sku">
+            <id property="id" column="sku_id"/>
+            <result property="size" column="sku_size"/>
+        </collection>
+    </resultMap>
+
+    <select id="list" resultMap="ProductResultMap">
+        select a.id as id
+        ,a.name as name
+        ,a.price as price
+        ,b.id as sku_id
+        ,b.size as sku_size
+        ,b.product_id as sku_product_id
+        from products a left join skus b
+        on a.id =b.product_id
+    </select>
+
+</mapper>
